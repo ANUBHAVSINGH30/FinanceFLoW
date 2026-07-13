@@ -18,6 +18,14 @@ export class AuthService {
       throw new AppError("Email already exists", 409);
     }
 
+    const userSelect = {
+        id: true,
+        name: true,
+        email: true,
+        currency: true,
+        createdAt: true,
+        } as const;
+
     //hash password
     const hashedPassword = await hashPassword(data.password);
 
@@ -28,13 +36,7 @@ export class AuthService {
         email: data.email,
         password: hashedPassword,
       },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        currency: true,
-        createdAt: true,
-      },
+      select: userSelect,
     });
 
     //generate roken

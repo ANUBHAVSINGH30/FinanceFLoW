@@ -2,8 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { verifyToken } from "../utils/jwt.js";
 import { AppError } from "../utils/appError.js";
 import { JwtPayload } from "jsonwebtoken";
-import { findPackageJSON } from "node:module";
-import { tr } from "zod/locales";
 
 export function AuthMiddleware(
     req: Request,
@@ -35,7 +33,12 @@ export function AuthMiddleware(
         req.userId =decoded.userId
 
         next();
-    }catch (error){
-        next(new AppError("Invalid or expired token", 401))
-    };
+    }catch (error) {
+        if (error instanceof AppError) {
+            return next(error);
+        }
+
+        return next(new AppError("Invalid or expired token", 401));
+        }
 };
+    

@@ -27,7 +27,7 @@ export class TransactionController {
     req: Request,
     res: Response,
     next: NextFunction
-) {
+    ) {
     try {
         const transactions =
             await TransactionServices.getTransactions(
@@ -42,5 +42,69 @@ export class TransactionController {
     } catch (error) {
         next(error);
     }
-}
+    }
+
+    static async getTransactionById(
+        req: Request<{ id: string }>,
+        res: Response,
+        next: NextFunction
+    ) {
+        try{
+        const transaction =
+        await TransactionServices.getTransactionById(
+            req.params.id,
+            req.userId!
+        );
+
+            return res.status(200).json({
+                success: true,
+                data: transaction,
+            });
+        } catch(error){
+            next(error);
+        }
+    }
+
+    static async updateTransaction(
+        req: Request<{ id: string }>,
+        res: Response,
+        next: NextFunction
+    ) {
+        try{
+            const transaction = await TransactionServices.updateTransaction(
+            req.params.id,
+            req.userId!,
+            req.body
+        );
+
+        return res.status(200).json({
+            success: true,
+            message: "Transaction updated successfully",
+            data: transaction
+        })
+        }catch (error){
+            next(error);
+        }
+    }
+
+
+    static async deleteTransaction(
+        req: Request<{ id: string }>,
+        res: Response,
+        next: NextFunction
+    ) {
+        try{
+            const transaction = await TransactionServices.deleteTransaction(
+                req.params.id,
+                req.userId!
+            );
+
+            return res.status(200).json({
+                success: true,
+                message: "Transaction deleted successfully"
+            });
+        }catch(error){
+            next(error);
+        }
+    }
 }

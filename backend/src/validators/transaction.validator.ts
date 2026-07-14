@@ -1,6 +1,9 @@
 import {z} from "zod";
 import { CATEGORIES } from "../constants/categories.js";
 
+export const categoryEnum = z.enum(CATEGORIES);
+export const transactionTypeEnum = z.enum(["income", "expense"]);
+
 export const createTransactionSchema = z.object({
     title: z
         .string()
@@ -12,9 +15,9 @@ export const createTransactionSchema = z.object({
         .number()
         .positive("Amount should be a positive number"),
 
-    type: z.enum(["income", "expense"]),
+    type: transactionTypeEnum,
 
-    category: z.enum(CATEGORIES),
+    category: categoryEnum,
 
     date: z.coerce.date(),
 
@@ -34,3 +37,5 @@ export const updateTransactionSchema = createTransactionSchema.partial();
 
 export type CreateTransactionInput = z.infer<typeof createTransactionSchema>;
 export type UpdateTransactionInput = z.infer<typeof updateTransactionSchema>;
+export type Category = z.infer<typeof categoryEnum>;
+export type Type = z.infer<typeof transactionTypeEnum>;

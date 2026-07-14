@@ -29,14 +29,22 @@ export class TransactionController {
     next: NextFunction
     ) {
     try {
-        const transactions =
-            await TransactionServices.getTransactions(
-                req.userId!
-            );
+        const {page, limit, search, category, type,startDate, endDate } = req.validatedQuery!;
 
+        const result = await TransactionServices.getTransactions(
+            req.userId!,
+            page,
+            limit,
+            search,
+            category,
+            type,
+            startDate,
+            endDate
+        )
+        
         return res.status(200).json({
             success: true,
-            data: transactions
+            data: result,
         });
 
     } catch (error) {

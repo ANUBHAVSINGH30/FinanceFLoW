@@ -1,8 +1,7 @@
 import prisma from "../config/db.js";
 import type { CreateTransactionInput, UpdateTransactionInput } from "../validators/transaction.validator.js";
 import { AppError } from "../utils/appError.js";
-import { NextFunction } from "express";
-import { rmSync } from "node:fs";
+import { Category,Type } from "../validators/transaction.validator.js";
 
 export class TransactionServices {
     static async createTransaction(
@@ -25,15 +24,78 @@ export class TransactionServices {
         return transaction;
     }
 
-    static async getTransactions(userId: string) {
-    return prisma.transaction.findMany({
-        where:{
-                userId
+    //get transaction business logic
+    static async getTransactions(
+        userId: string,
+        page: number,
+        limit: number,
+        search?: string,
+        category?: Category,
+        type?: Type,
+        startDate?: Date,
+        endDate?: Date) {
+
+    const skip = (page - 1) * limit;
+
+    const where = {
+    userId,
+
+    ...(search && {
+        OR: [
+            {
+                title: {
+                    contains: search,
+                    mode: "insensitive" as const,
+                },
             },
-            orderBy: {
-                date: "desc"
-            }
-        });
+            {
+                note: {
+                    contains: search,
+                    mode: "insensitive" as const,
+                },
+            },
+            ],
+        }),
+
+        ...(category && {
+            category,
+        }),
+
+        ...(type && {
+            type,
+        }),
+
+        ...(startDate &&
+            endDate && {
+                date: {
+                gte: startDate,
+                lte: endDate,
+            },
+        }),
+    };
+
+    const total = await prisma.transaction.count({
+        where,
+    });
+
+    const transactions = await prisma.transaction.findMany({
+        where,
+        orderBy: {
+            date: "desc"
+        },
+        skip,
+        take: limit,
+    })
+
+    return {
+        transactions,
+        pagination: {
+            page,
+            limit,
+            total,
+            totalPages: Math.ceil(total/ limit),
+        },
+    };
     }
 
     static async getTransactionById(

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { CATEGORIES } from "../constants/categories.js";
-import { transactionTypeEnum } from "./transaction.validator.js";
+import { transactionTypeEnum,sortByEnum, orderEnum } from "./transaction.validator.js";
 
 export const categoryEnum = z.enum(CATEGORIES);
 
@@ -27,6 +27,10 @@ export const transactionQuerySchema = z.object({
     startDate: z.coerce.date().optional(),
 
     endDate: z.coerce.date().optional(),
+
+    sortBy: sortByEnum.default("date"),
+
+    orderBy: orderEnum.default("desc"),
 });
 
 export type TransactionQuery = z.infer<typeof transactionQuerySchema>;

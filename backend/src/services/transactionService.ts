@@ -1,8 +1,10 @@
 import prisma from "../config/db.js";
-import type { CreateTransactionInput, UpdateTransactionInput } from "../validators/transaction.validator.js";
+import type { CreateTransactionInput, SortBy, Order, UpdateTransactionInput } from "../validators/transaction.validator.js";
 import { AppError } from "../utils/appError.js";
 import { Category,Type } from "../validators/transaction.validator.js";
 
+
+//create Transaction.
 export class TransactionServices {
     static async createTransaction(
         data: CreateTransactionInput,
@@ -24,6 +26,7 @@ export class TransactionServices {
         return transaction;
     }
 
+
     //get transaction business logic
     static async getTransactions(
         userId: string,
@@ -33,7 +36,10 @@ export class TransactionServices {
         category?: Category,
         type?: Type,
         startDate?: Date,
-        endDate?: Date) {
+        endDate?: Date,
+        sortBy: SortBy = "date",
+        orderby: Order = "desc",
+    ) {
 
     const skip = (page - 1) * limit;
 
@@ -81,7 +87,7 @@ export class TransactionServices {
     const transactions = await prisma.transaction.findMany({
         where,
         orderBy: {
-            date: "desc"
+            [sortBy]: orderby
         },
         skip,
         take: limit,
@@ -98,6 +104,8 @@ export class TransactionServices {
     };
     }
 
+
+    //get transaction by ID
     static async getTransactionById(
         transactionId: string,
         userId: string
@@ -116,6 +124,8 @@ export class TransactionServices {
         return transaction
     }
 
+
+    //update transaction
     static async updateTransaction(
         transactionId: string,
         userId: string,
@@ -148,6 +158,7 @@ export class TransactionServices {
     }
 
 
+    //delete transaction
     static async deleteTransaction(
         transactionId: string,
         userId: string

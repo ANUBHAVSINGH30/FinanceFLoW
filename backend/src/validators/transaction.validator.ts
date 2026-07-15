@@ -3,6 +3,17 @@ import { CATEGORIES } from "../constants/categories.js";
 
 export const categoryEnum = z.enum(CATEGORIES);
 export const transactionTypeEnum = z.enum(["income", "expense"]);
+export const sortByEnum = z.enum([
+    "date",
+    "amount",
+    "title",
+    "category",
+]);
+
+export const orderEnum = z.enum([
+    "asc",
+    "desc",
+]);
 
 export const createTransactionSchema = z.object({
     title: z
@@ -39,3 +50,5 @@ export type CreateTransactionInput = z.infer<typeof createTransactionSchema>;
 export type UpdateTransactionInput = z.infer<typeof updateTransactionSchema>;
 export type Category = z.infer<typeof categoryEnum>;
 export type Type = z.infer<typeof transactionTypeEnum>;
+export type SortBy = z.infer<typeof sortByEnum>;
+export type Order = z.infer<typeof orderEnum>;

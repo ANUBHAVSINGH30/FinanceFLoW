@@ -1,5 +1,5 @@
 import prisma from "../config/db.js";
-import type { CreateTransactionInput, UpdateTransactionInput } from "../validators/transaction.validator.js";
+import type { CreateTransactionInput, SortBy, Order, UpdateTransactionInput } from "../validators/transaction.validator.js";
 import { AppError } from "../utils/appError.js";
 import { Category,Type } from "../validators/transaction.validator.js";
 
@@ -33,7 +33,10 @@ export class TransactionServices {
         category?: Category,
         type?: Type,
         startDate?: Date,
-        endDate?: Date) {
+        endDate?: Date,
+        sortBy: SortBy = "date",
+        orderby: Order = "desc",
+    ) {
 
     const skip = (page - 1) * limit;
 
@@ -81,7 +84,7 @@ export class TransactionServices {
     const transactions = await prisma.transaction.findMany({
         where,
         orderBy: {
-            date: "desc"
+            [sortBy]: orderby
         },
         skip,
         take: limit,

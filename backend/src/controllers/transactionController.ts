@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { TransactionServices } from "../services/transactionService.js";
+import { SortBy, SortOrder} from "../validators/transaction.validator.js";
 
 export class TransactionController {
   static async createTransaction(
@@ -29,7 +30,7 @@ export class TransactionController {
     next: NextFunction
     ) {
     try {
-        const {page, limit, search, category, type,startDate, endDate } = req.validatedQuery!;
+        const {page, limit, search, category, type,startDate, endDate, sortBy, orderBy } = req.validatedQuery!;
 
         const result = await TransactionServices.getTransactions(
             req.userId!,
@@ -39,7 +40,9 @@ export class TransactionController {
             category,
             type,
             startDate,
-            endDate
+            endDate,
+            sortBy,
+            orderBy
         )
         
         return res.status(200).json({

@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import { TransactionServices } from "../services/transactionService.js";
-import { SortBy, SortOrder} from "../validators/transaction.validator.js";
 
 export class TransactionController {
   static async createTransaction(

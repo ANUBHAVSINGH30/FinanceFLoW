@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { TransactionServices } from "../services/transactionService.js";
+import { TransactionQuery } from "../validators/transactionQuery.validator.js";
+
 
 export class TransactionController {
   static async createTransaction(
@@ -29,7 +31,17 @@ export class TransactionController {
     next: NextFunction
     ) {
     try {
-        const {page, limit, search, category, type,startDate, endDate, sortBy, orderBy } = req.validatedQuery!;
+        const {
+                page,
+                limit,
+                search,
+                category,
+                type,
+                startDate,
+                endDate,
+                sortBy,
+                orderBy,
+            } = req.validatedQuery as TransactionQuery;
 
         const result = await TransactionServices.getTransactions(
             req.userId!,

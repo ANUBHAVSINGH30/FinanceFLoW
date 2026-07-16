@@ -4,6 +4,6 @@ import type { TransactionQuery } from "../validators/transactionQuery.validator.
 declare module "express-serve-static-core"{
     interface Request {
         userId?: string,
-        validatedQuery?: TransactionQuery
+        validatedQuery?: unknown
     }
-}
+}   

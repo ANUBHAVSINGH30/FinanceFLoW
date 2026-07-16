@@ -50,8 +50,9 @@ model Transaction {
 model Budget {
   id       String  @id @default(uuid())
   category String
-  limit    Decimal @db.Decimal(14, 2)
-  month    String
+  amount    Decimal @db.Decimal(14, 2)
+  month    Int
+  year     Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -59,5 +60,5 @@ model Budget {
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, category, month])
+  @@unique([userId, category, month, year])
 }

@@ -1,3 +1,4 @@
+import { date } from "zod";
 import prisma from "../config/db.js";
 
 export class DashboardService{
@@ -97,7 +98,44 @@ export class DashboardService{
     };
 
 
-//     static async getMonthlyTrend(userId: string){
-//         const monthlyTrend = await prisma.transaction.
-//     }
+    static async getMonthlyTrend(userId: string, year: number){
+
+        const startofYear = new Date(year, 0,1);
+        const endofYear = new Date(year, 11, 31, 23, 59, 59, 999)
+
+        const transaction = await prisma.transaction.findMany({
+            where: {
+                userId,
+                date: {
+                    gte: startofYear,
+                    lte: endofYear,
+                },
+            },
+            orderBy: {
+                type: "asc"
+            },
+        });
+
+
+    const monthlyTrend = Array.from({ length: 12 }, (_, index) => ({
+        month: new Date(0, index).toLocaleString("default", {
+            month: "short",
+        }),
+        income: 0,
+        expense: 0,
+    }));
+
+    for (const transactions of transaction) {
+        const monthIndex = transactions.date.getMonth();
+
+        if (transactions.type === "income") {
+            monthlyTrend[monthIndex].income += transactions.amount.toNumber();
+        } else {
+            monthlyTrend[monthIndex].expense += transactions.amount.toNumber();
+        }
+    }
+
+    return monthlyTrend;
+
+    }
 }

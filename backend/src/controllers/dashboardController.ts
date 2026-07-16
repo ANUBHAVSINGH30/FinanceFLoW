@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { DashboardService} from "../services/dashboardService.js";
 
 
-import type { DashboardQuery } from "../validators/dashboard.validator.js";
+import type { DashboardQuery, MonthlyQuery } from "../validators/dashboard.validator.js";
 
 export class DashboardController {
     static async getSummary(
@@ -52,22 +52,25 @@ export class DashboardController {
     };
 
 
-    // static async getMonthlyTrend(
-    //     req: Request,
-    //     res: Response,
-    //     next: NextFunction
-    // ) {
-    //     try{
-    //         const montly = await DashboardService.getMonthlyTrend(
-    //             req.userId!
-    //         );
+    static async getMonthlyTrend(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) {
+        try{
+            const { year } = req.validatedQuery as MonthlyQuery;
 
-    //         return res.status(200).json({
-    //             success: true,
-    //             data: montly
-    //         })
-    //     }catch(error){
-    //         next(error);
-    //     }
-    // };
+            const montly = await DashboardService.getMonthlyTrend(
+                req.userId!,
+                year,
+            );
+
+            return res.status(200).json({
+                success: true,
+                data: montly
+            })
+        }catch(error){
+            next(error);
+        }
+    };
 };

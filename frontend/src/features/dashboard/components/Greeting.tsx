@@ -35,13 +35,13 @@ export default function Greeting({name} : GreetingProps) {
         >
           <Bell size={18} />
         </button>
-        <button
+        {/* <button
           className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-slate-600 shadow-sm ring-1 ring-slate-200"
           type="button"
           aria-label="Calendar"
         >
           <CalendarDays size={18} />
-        </button>
+        </button> */}
       </div>
     </section>
   );

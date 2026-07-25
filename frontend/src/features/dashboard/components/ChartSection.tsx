@@ -9,6 +9,12 @@ const months = [
   { label: "Jun", value: 88, current: true },
 ];
 
+export interface MonthlyTrend {
+    month: string;
+    income: number;
+    expense: number;
+}
+
 export default function MonthlyExpenseChart() {
   return (
     <Card>

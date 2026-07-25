@@ -53,7 +53,7 @@ export class TransactionController {
             startDate,
             endDate,
             sortBy,
-            orderBy
+            orderBy,
         )
         
         return res.status(200).json({

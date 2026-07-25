@@ -86,9 +86,14 @@ export class TransactionServices {
 
     const transactions = await prisma.transaction.findMany({
         where,
-        orderBy: {
-            [sortBy]: orderby
-        },
+        orderBy: [
+            {
+                [sortBy]: orderby
+            },
+            {
+                createdAt: "desc"
+            },
+        ],
         skip,
         take: limit,
     })

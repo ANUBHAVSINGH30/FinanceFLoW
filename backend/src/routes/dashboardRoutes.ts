@@ -7,7 +7,7 @@ import { dashboardQuerySchema, monthlyQuerySchema } from "../validators/dashboar
 const router = Router();
 
 router.get("/summary", AuthMiddleware, validateQuery(dashboardQuerySchema), DashboardController.getSummary);
-router.get("/category-beakdown", AuthMiddleware,validateQuery(dashboardQuerySchema), DashboardController.getCategoryBreakdown);
+router.get("/category-breakdown", AuthMiddleware,validateQuery(dashboardQuerySchema), DashboardController.getCategoryBreakdown);
 router.get("/monthly-trend", AuthMiddleware, validateQuery(monthlyQuerySchema), DashboardController.getMonthlyTrend);
 
 export default router;

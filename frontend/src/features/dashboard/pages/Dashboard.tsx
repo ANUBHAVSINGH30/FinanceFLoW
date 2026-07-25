@@ -1,6 +1,7 @@
 import { useEffect, useState,} from "react";
-import { getDashboardSummary, type DashboardSummary, } from "../../../services/dashboard";
+import { type CategoryBreakdown, getCategoryBreakdown, getDashboardSummary, type DashboardSummary, } from "../../../services/dashboard";
 import { type Budget, getBudget } from "../../../services/budget";
+import { getRecentTransactions, type Transactions } from "../../../services/transaction";
 
 
 import {
@@ -24,6 +25,7 @@ import SpendingInsight from "../components/SpendingInsight";
 import BalanceCard from "../components/BalanceCard";
 import Greeting from "../components/Greeting";
 
+
 const sidebarItems = [
   { label: "Dashboard", icon: Home, active: true },
   { label: "Transactions", icon: ReceiptText },
@@ -39,7 +41,9 @@ function Dashboard() {
 
   const [loading, setLoading] = useState(true);
 
-  const [budgets, setBudgets] = useState<Budget []>([])
+  const [budgets, setBudgets] = useState<Budget []>([]);
+  const [categories, setCategories] = useState<CategoryBreakdown []>([]);
+  const [transactions, setTransactions] = useState<Transactions []>([]);
 
   const user = JSON.parse(localStorage.getItem("user") ?? "{}");
   const [summary, setSummary] = useState<DashboardSummary | null>(null);  
@@ -47,12 +51,16 @@ function Dashboard() {
   useEffect(() => {
     const fetchDashboardSummary = async () => {
       try{
-        const [summaryData, budgetData] = await Promise.all([
+        const [summaryData, budgetData, categoryData, transactionData] = await Promise.all([
           getDashboardSummary(),
           getBudget(),
+          getCategoryBreakdown(),
+          getRecentTransactions(),
         ]);
         setSummary(summaryData);
         setBudgets(budgetData);
+        setCategories(categoryData);
+        setTransactions(transactionData);
 
       }catch(error){
         console.log(error);
@@ -126,11 +134,11 @@ function Dashboard() {
             />
             <QuickActions />
 
-            <BudgetProgress budget={budgets[0]} />
+            <BudgetProgress budgets={budgets} />
 
-            <ExpenseCategories />
+            <ExpenseCategories categories={categories} />
 
-            <RecentTransactions />
+            <RecentTransactions transactions={transactions}/>
 
             <SpendingInsight />
 

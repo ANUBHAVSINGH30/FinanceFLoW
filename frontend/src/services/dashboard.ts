@@ -7,6 +7,11 @@ export interface DashboardSummary {
     balance: number
 }
 
+export interface CategoryBreakdown {
+    category: string,
+    amount: number
+}
+
 export const getDashboardSummary = async () => {
     const response = await api.get("/dashboard/summary");
     return response.data.data;
@@ -14,7 +19,7 @@ export const getDashboardSummary = async () => {
 
 export const getCategoryBreakdown = async () => {
     const response = await api.get("/dashboard/category-breakdown");
-    return response.data;
+    return response.data.data;
 };
 
 export const getMonthlyTrend = async () => {

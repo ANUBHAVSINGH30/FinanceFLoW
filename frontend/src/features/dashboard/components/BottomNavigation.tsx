@@ -1,8 +1,9 @@
-import { BarChart3, Home, Plus, ReceiptText, User } from "lucide-react";
+import { BarChart3, Home, icons, Plus, ReceiptText, User, Wallet} from "lucide-react";
 
 const items = [
   { label: "Home", icon: Home },
   { label: "Transactions", icon: ReceiptText },
+  { label: "Budget", icon: Wallet},
   { label: "Analytics", icon: BarChart3 },
   { label: "Profile", icon: User },
 ];
@@ -25,14 +26,6 @@ export default function BottomNavigation() {
             </button>
           );
         })}
-
-        <button
-          className="mx-auto flex h-[52px] w-[52px] -translate-y-4 items-center justify-center rounded-full bg-blue-500 text-white shadow-lg shadow-blue-500/30"
-          type="button"
-          aria-label="Add transaction"
-        >
-          <Plus size={26} />
-        </button>
 
         {items.slice(2).map((item) => {
           const Icon = item.icon;

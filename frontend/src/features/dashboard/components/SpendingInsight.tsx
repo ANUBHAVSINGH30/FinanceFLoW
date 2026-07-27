@@ -1,4 +1,4 @@
-import { TrendingUp, X } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 import { Card } from "../../../components/ui/Card";
 
 export default function SpendingInsight() {

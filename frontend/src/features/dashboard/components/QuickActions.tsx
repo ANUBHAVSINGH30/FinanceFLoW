@@ -1,21 +1,15 @@
-import { ArrowDownLeft, ArrowUpRight, WalletCards } from "lucide-react";
+import { ArrowUpRight, WalletCards } from "lucide-react";
 
 const actions = [
   {
-    label: "Add Income",
-    icon: ArrowDownLeft,
+    label: "Add Transaction",
+    icon: ArrowUpRight,
     className: "bg-blue-500 text-white shadow-blue-500/20 hover:bg-blue-600",
   },
   {
-    label: "Add Expense",
-    icon: ArrowUpRight,
-    className: "bg-slate-950 text-white shadow-slate-950/20 hover:bg-slate-800",
-  },
-  {
-    label: "Budget",
+    label: "Add Budget",
     icon: WalletCards,
-    className:
-      "col-span-2 border border-[#E5E5E5] bg-white text-slate-700 hover:bg-slate-50",
+    className: "border border-[#E5E5E5] bg-white text-slate-700 hover:bg-slate-50",
   },
 ];
 

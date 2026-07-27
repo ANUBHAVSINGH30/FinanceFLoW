@@ -4,6 +4,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import SignIn from "../features/auth/pages/SignIn";
 import SignUp from "../features/auth/pages/Signup";
 import Dashboard from "../features/dashboard/pages/Dashboard";
+import Transactions from "../features/transaction/pages/Transaction";
 
 function AppRoutes(){
     return (
@@ -17,6 +18,7 @@ function AppRoutes(){
             {/* Protected Route */}
             <Route element={<ProtectedRoute />}>
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="transaction" element={<Transactions />} />
             </Route>
 
             {/* Fallback Route */}

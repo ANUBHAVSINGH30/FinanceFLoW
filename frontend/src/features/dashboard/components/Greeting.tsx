@@ -1,4 +1,4 @@
-import { Bell, CalendarDays } from "lucide-react";
+import { Bell } from "lucide-react";
 import { formatCurrentDate } from "../utils/date";
 import { getGreeting } from "../utils/greeting";
 
@@ -19,11 +19,11 @@ export default function Greeting({name} : GreetingProps) {
         </div>
         <div>
           <div className="flex gap-1">
-            <h1 className="text-lg font-bold tracking-tight text-slate-950 md:text-2xl">
+            <h1 className="text-lg font-normal tracking-tight text-slate-950 md:text-2xl">
               {getGreeting()}, {name}
             </h1>
           </div>
-          <p className="text-sm font-medium text-slate-500">{formatCurrentDate()}</p>
+          <p className="text-sm font-thin text-slate-900">{formatCurrentDate()}</p>
         </div>
       </div>
 

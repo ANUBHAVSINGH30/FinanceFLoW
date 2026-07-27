@@ -1,5 +1,5 @@
 import { useEffect, useState,} from "react";
-import { type CategoryBreakdown, getCategoryBreakdown, getDashboardSummary, type DashboardSummary, } from "../../../services/dashboard";
+import { type CategoryBreakdown, getCategoryBreakdown, getDashboardSummary, getMonthlyTrend, type DashboardSummary, type MonthlyTrend } from "../../../services/dashboard";
 import { type Budget, getBudget } from "../../../services/budget";
 import { getRecentTransactions, type Transactions } from "../../../services/transaction";
 
@@ -44,6 +44,7 @@ function Dashboard() {
   const [budgets, setBudgets] = useState<Budget []>([]);
   const [categories, setCategories] = useState<CategoryBreakdown []>([]);
   const [transactions, setTransactions] = useState<Transactions []>([]);
+  const [monthlyTrend, setMonthlyTrend] = useState<MonthlyTrend[]>([]);
 
   const user = JSON.parse(localStorage.getItem("user") ?? "{}");
   const [summary, setSummary] = useState<DashboardSummary | null>(null);  
@@ -51,16 +52,18 @@ function Dashboard() {
   useEffect(() => {
     const fetchDashboardSummary = async () => {
       try{
-        const [summaryData, budgetData, categoryData, transactionData] = await Promise.all([
+        const [summaryData, budgetData, categoryData, transactionData, monthlyData] = await Promise.all([
           getDashboardSummary(),
           getBudget(),
           getCategoryBreakdown(),
           getRecentTransactions(),
+          getMonthlyTrend(),
         ]);
         setSummary(summaryData);
         setBudgets(budgetData);
         setCategories(categoryData);
         setTransactions(transactionData);
+        setMonthlyTrend(monthlyData);
 
       }catch(error){
         console.log(error);
@@ -145,7 +148,7 @@ function Dashboard() {
           </section>
 
           <section className="space-y-4 lg:col-span-4">
-            <MonthlyExpenseChart />
+            <MonthlyExpenseChart monthlyTrend={monthlyTrend}/>
           </section>
         </div>
       </main>

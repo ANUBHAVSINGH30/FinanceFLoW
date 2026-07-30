@@ -12,6 +12,12 @@ export interface CategoryBreakdown {
     amount: number
 }
 
+export interface MonthlyTrend {
+    month: string;
+    income: number;
+    expense: number;
+}
+
 export const getDashboardSummary = async () => {
     const response = await api.get("/dashboard/summary");
     return response.data.data;
@@ -24,5 +30,5 @@ export const getCategoryBreakdown = async () => {
 
 export const getMonthlyTrend = async () => {
     const response = await api.get("/dashboard/monthly-trend");
-    return response.data;
+    return response.data.data;
 };

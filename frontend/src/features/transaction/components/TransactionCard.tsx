@@ -12,7 +12,7 @@ export default function TransactionCard() {
   const isIncome = transaction.type === "INCOME";
 
   return (
-    <div className="flex items-center justify-between rounded-2xl border border-[#E5E5E5] bg-white p-4 transition-shadow hover:shadow-sm">
+    <div className="flex items-center justify-between p-4">
       <div className="flex items-center gap-4">
         <div
           className={`flex h-12 w-12 items-center justify-center rounded-full ${
@@ -40,7 +40,7 @@ export default function TransactionCard() {
       </div>
 
       <p
-        className={`text-lg font-bold ${
+        className={`text-md font-bold ${
           isIncome ? "text-green-600" : "text-red-600"
         }`}
       >

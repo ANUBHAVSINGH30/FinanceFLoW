@@ -1,7 +1,6 @@
 import TransactionHeader from "../components/TransactionHeader";
 import SearchBar from "../components/SearchBar";
 import FilterBar from "../components/FilterBar";
-import TransactionCard from "../components/TransactionCard";
 import TransactionList from "../components/TransactionList";
 import Pagination from "../components/Pagination";
 
@@ -14,8 +13,6 @@ export default function Transactions() {
         <SearchBar />
 
         <FilterBar />
-
-        <TransactionCard />
 
         <TransactionList />
 

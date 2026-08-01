@@ -1,15 +1,19 @@
 import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/Card";
 
-import type { Transactions } from "../../../services/transaction";
+import type { Transaction } from "../../../services/transaction";
 import { getCategoryIcon } from "../utils/categoryIcon";
 import { formatDate } from "../utils/formatDate";
+import { useNavigate } from "react-router-dom";
 
 type RecentTransactionsProps = {
-  transactions: Transactions[];
+  transactions: Transaction[];
 };
 
 
 export default function RecentTransactions({transactions,}: RecentTransactionsProps) {
+
+  const navigate = useNavigate();
+  
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
@@ -17,7 +21,7 @@ export default function RecentTransactions({transactions,}: RecentTransactionsPr
           <CardTitle>Recent Transactions</CardTitle>
           {/* <p className="mt-1 text-sm text-slate-500"></p> */}
         </div>
-        <button className="text-sm font-semibold text-blue-500" type="button">
+        <button onClick={() => navigate("/transaction")} className="text-sm font-semibold text-blue-500" type="button">
           See all
         </button>
       </CardHeader>

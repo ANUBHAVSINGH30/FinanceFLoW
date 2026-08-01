@@ -6,7 +6,7 @@ export interface Budget {
     amount: number,
     month: number,
     year: number,
-    spend: number,
+    spent: number,
     remaining: number,
     percentageUsed: number,
     status: string

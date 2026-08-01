@@ -14,7 +14,7 @@ export default function Greeting({name} : GreetingProps) {
       <div className="flex items-center gap-3">
         <div className="h-12 w-12 overflow-hidden rounded-full bg-slate-200">
           <div className="flex h-full w-full items-center justify-center bg-blue-100 text-sm font-bold text-blue-600">
-            A
+            {name.charAt(0).toUpperCase()}
           </div>
         </div>
         <div>

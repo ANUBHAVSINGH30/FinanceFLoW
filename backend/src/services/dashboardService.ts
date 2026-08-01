@@ -1,4 +1,3 @@
-import { date } from "zod";
 import prisma from "../config/db.js";
 
 export class DashboardService{

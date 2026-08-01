@@ -91,7 +91,7 @@ export class AuthService {
 
   //getMe
   static async getMe(userId: string){
-    const user = prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
         where: {
             id: userId
         },

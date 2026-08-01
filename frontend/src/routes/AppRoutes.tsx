@@ -18,7 +18,7 @@ function AppRoutes(){
             {/* Protected Route */}
             <Route element={<ProtectedRoute />}>
                 <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="transaction" element={<Transactions />} />
+                <Route path="/transaction" element={<Transactions />} />
             </Route>
 
             {/* Fallback Route */}

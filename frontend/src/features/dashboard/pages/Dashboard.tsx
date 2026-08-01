@@ -1,7 +1,9 @@
 import { useEffect, useState,} from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { type CategoryBreakdown, getCategoryBreakdown, getDashboardSummary, getMonthlyTrend, type DashboardSummary, type MonthlyTrend } from "../../../services/dashboard";
 import { type Budget, getBudget } from "../../../services/budget";
-import { getRecentTransactions, type Transactions } from "../../../services/transaction";
+import { getRecentTransactions, type Transaction } from "../../../services/transaction";
+import { logout } from "../../../lib/auth";
 
 
 import {
@@ -27,23 +29,25 @@ import Greeting from "../components/Greeting";
 
 
 const sidebarItems = [
-  { label: "Dashboard", icon: Home, active: true },
-  { label: "Transactions", icon: ReceiptText },
-  { label: "Analytics", icon: BarChart3 },
-  { label: "Budgets", icon: PieChart },
-  { label: "Cards", icon: CreditCard },
-  { label: "Profile", icon: User },
-  { label: "Settings", icon: Settings },
+  { label: "Dashboard", icon: Home, path: "/dashboard" },
+  { label: "Transactions", icon: ReceiptText, path: "/transaction" },
+  { label: "Analytics", icon: BarChart3, path: "/dashboard" },
+  { label: "Budgets", icon: PieChart, path: "/dashboard" },
+  { label: "Cards", icon: CreditCard, path: "/dashboard" },
+  { label: "Profile", icon: User, path: "/dashboard" },
+  { label: "Settings", icon: Settings, path: "/dashboard" },
 ];
 
 
 function Dashboard() {
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const [loading, setLoading] = useState(true);
 
   const [budgets, setBudgets] = useState<Budget []>([]);
   const [categories, setCategories] = useState<CategoryBreakdown []>([]);
-  const [transactions, setTransactions] = useState<Transactions []>([]);
+  const [transactions, setTransactions] = useState<Transaction []>([]);
   const [monthlyTrend, setMonthlyTrend] = useState<MonthlyTrend[]>([]);
 
   const user = JSON.parse(localStorage.getItem("user") ?? "{}");
@@ -95,12 +99,15 @@ function Dashboard() {
         <nav className="mt-10 space-y-2">
           {sidebarItems.map((item) => {
             const Icon = item.icon;
+            const isActive = location.pathname === item.path && item.label === "Dashboard"
+              || (item.label === "Transactions" && location.pathname === "/transaction");
 
             return (
               <button
                 key={item.label}
+                onClick={() => navigate(item.path)}
                 className={`flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-colors ${
-                  item.active
+                  isActive
                     ? "bg-blue-50 text-blue-600"
                     : "text-slate-500 hover:bg-slate-100 hover:text-slate-900"
                 }`}
@@ -114,6 +121,10 @@ function Dashboard() {
         </nav>
 
         <button
+          onClick={() => {
+            logout();
+            navigate("/signin");
+          }}
           className="absolute bottom-6 left-6 right-6 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold text-slate-500 hover:bg-slate-100"
           type="button"
         >

@@ -1,5 +1,4 @@
 import bcrypt from "bcryptjs";
-import { promises } from "node:dns";
 
 const SALT_ROUNDS = 10;
 

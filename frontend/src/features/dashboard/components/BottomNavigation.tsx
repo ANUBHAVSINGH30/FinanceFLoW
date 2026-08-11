@@ -4,7 +4,7 @@ import { BarChart3, Home, ReceiptText, User, Wallet } from "lucide-react";
 const items = [
   { label: "Dashboard", icon: Home, path: "/dashboard" },
   { label: "Transactions", icon: ReceiptText, path: "/transaction" },
-  { label: "Budget", icon: Wallet, path: "/dashboard" },
+  { label: "Budget", icon: Wallet, path: "/budget" },
   { label: "Analytics", icon: BarChart3, path: "/dashboard" },
   { label: "Profile", icon: User, path: "/dashboard" },
 ];
@@ -20,7 +20,8 @@ export default function BottomNavigation() {
           const Icon = item.icon;
           const isActive =
             (item.label === "Dashboard" && location.pathname === "/dashboard") ||
-            (item.label === "Transactions" && location.pathname === "/transaction");
+            (item.label === "Transactions" && location.pathname === "/transaction") ||
+            (item.label === "Budget" && location.pathname === "/budget");
 
           return (
             <button

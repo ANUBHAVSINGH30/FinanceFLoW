@@ -21,6 +21,7 @@ const transactionSchema = z.object({
   category: z.enum(CATEGORIES),
   date: z.string().min(1, "Date is required"),
   note: z.string().trim().max(500, "Note is too long").optional(),
+  isRecurring: z.boolean().default(false),
 });
 
 type TransactionFormInput = z.input<typeof transactionSchema>;
@@ -52,6 +53,7 @@ export default function CreateTransactionForm({
       category: "Other",
       date: new Date().toISOString().split("T")[0],
       note: "",
+      isRecurring: false
     },
   });
 
@@ -142,6 +144,21 @@ export default function CreateTransactionForm({
         {errors.date && (
           <p className="text-xs text-red-500">{errors.date.message}</p>
         )}
+      </div>
+
+      <div className="space-y-1.5">
+         <label className="text-sm font-medium text-slate-700">Recurring Transaction</label>
+        <div className="flex items-center justify-between rounded-xl border border-slate-200 px-4 py-3">
+          <p className="text-xs text-slate-400">
+            Repeat this transaction every month
+          </p>
+
+          <input
+          type="checkbox"
+          {...register("isRecurring")}
+          className="h-5 w-5 accent-blue-600"
+        />
+        </div>
       </div>
 
       <div className="space-y-1.5">

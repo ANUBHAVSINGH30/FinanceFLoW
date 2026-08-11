@@ -32,7 +32,7 @@ const sidebarItems = [
   { label: "Dashboard", icon: Home, path: "/dashboard" },
   { label: "Transactions", icon: ReceiptText, path: "/transaction" },
   { label: "Analytics", icon: BarChart3, path: "/dashboard" },
-  { label: "Budgets", icon: PieChart, path: "/dashboard" },
+  { label: "Budgets", icon: PieChart, path: "/budget" },
   { label: "Cards", icon: CreditCard, path: "/dashboard" },
   { label: "Profile", icon: User, path: "/dashboard" },
   { label: "Settings", icon: Settings, path: "/dashboard" },

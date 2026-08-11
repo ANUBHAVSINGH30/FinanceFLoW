@@ -9,6 +9,9 @@ type BalanceCardProps = {
 
 export default function BalanceCard({balance, income, expense}: BalanceCardProps) {
 
+  const currentMonth = new Date().toLocaleString("default", {
+    month: "long",
+  });
 
   return (
     <Card className="overflow-hidden bg-emerald-900! ">
@@ -34,7 +37,7 @@ export default function BalanceCard({balance, income, expense}: BalanceCardProps
           <div className="pr-5">
             <div className="flex items-center gap-2 text-sm font-medium text-amber-300">
               <ArrowDownLeft size={15} className="text-green-600" />
-              Income
+              {currentMonth} Income 
             </div>
             <p className="mt-2 text-xl font-semibold text-amber-100">₹{income.toLocaleString("en-IN")}</p>
           </div>
@@ -42,7 +45,7 @@ export default function BalanceCard({balance, income, expense}: BalanceCardProps
           <div className="pl-5">
             <div className="flex items-center gap-2 text-sm font-medium text-amber-300">
               <ArrowUpRight size={15} className="text-red-600" />
-              Expenses
+              {currentMonth} Expenses
             </div>
             <p className="mt-2 text-xl font-semibold text-amber-100">₹{expense.toLocaleString("en-IN")}</p>
           </div>

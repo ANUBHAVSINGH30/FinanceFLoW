@@ -1,44 +1,41 @@
 import { useState } from "react";
 import Modal from "../../../components/ui/Modal";
-import CreateTransactionForm from "./CreateTransactionForm";
-import { createTransaction } from "../../../services/transaction";
+import CreateBudgetForm from "./CreateBudgetForm";
+import { createBudget } from "../../../services/budget";
 
-type CreateTransactionModalProps = {
+type CreateBudgetModalProps = {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
 };
 
-export default function CreateTransactionModal({
+export default function CreateBudgetModal({
   isOpen,
   onClose,
   onSuccess,
-}: CreateTransactionModalProps) {
+}: CreateBudgetModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
   const handleSubmit = async (data: {
-    title: string;
-    amount: number;
-    type: "income" | "expense";
     category: string;
-    date: string;
-    note?: string;
-    isRecurring?: boolean;
+    amount: number;
+    month: string;
   }) => {
     setIsSubmitting(true);
     setError("");
 
     try {
-      await createTransaction({
-        ...data,
-        note: data.note || undefined,
-      });
+      await createBudget(data);
+
       onSuccess();
       onClose();
     } catch (err: unknown) {
       const message =
-        err instanceof Error ? err.message : "Failed to create transaction";
+        err instanceof Error
+          ? err.message
+          : "Failed to create budget";
+
       setError(message);
     } finally {
       setIsSubmitting(false);
@@ -46,13 +43,18 @@ export default function CreateTransactionModal({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="New Transaction">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="Create Budget"
+    >
       {error && (
         <div className="mb-4 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600">
           {error}
         </div>
       )}
-      <CreateTransactionForm
+
+      <CreateBudgetForm
         onSubmit={handleSubmit}
         onCancel={onClose}
         isSubmitting={isSubmitting}

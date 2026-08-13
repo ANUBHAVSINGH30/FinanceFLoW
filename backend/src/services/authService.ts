@@ -2,7 +2,7 @@ import prisma from "../config/db.js";
 import { AppError } from "../utils/appError.js";
 import { hashPassword, comparePassword } from "../utils/hash.js";
 import { generateToken } from "../utils/jwt.js";
-import type { SignupInput, SigninInput } from "../validators/auth.validator.js";
+import type { SignupInput, SigninInput, UpdateProfileInput, ChangePasswordInput } from "../validators/auth.validator.js";
 
 export class AuthService {
   static async signup(data: SignupInput) {
@@ -109,5 +109,49 @@ export class AuthService {
     }
 
     return user;
+  }
+
+  static async updateProfile(userId: string, data: UpdateProfileInput) {
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        name: data.name,
+        currency: data.currency,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        currency: true,
+        createdAt: true,
+      },
+    });
+
+    return user;
+  }
+
+  static async changePassword(userId: string, data: ChangePasswordInput) {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new AppError("User not found", 404);
+    }
+
+    const isPasswordValid = await comparePassword(data.currentPassword, user.password);
+
+    if (!isPasswordValid) {
+      throw new AppError("Current password is incorrect", 401);
+    }
+
+    const hashedPassword = await hashPassword(data.newPassword);
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: { password: hashedPassword },
+    });
+
+    return { message: "Password changed successfully" };
   }
 }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Modal from "../../../components/ui/Modal";
-import CreateBudgetForm from "./CreateBudgetForm";
+import CreateBudgetForm, { type BudgetFormData } from "./CreateBudgetForm";
 import { createBudget } from "../../../services/budget";
 
 type CreateBudgetModalProps = {
@@ -17,11 +17,7 @@ export default function CreateBudgetModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = async (data: {
-    category: string;
-    amount: number;
-    month: string;
-  }) => {
+  const handleSubmit = async (data: BudgetFormData) => {
     setIsSubmitting(true);
     setError("");
 

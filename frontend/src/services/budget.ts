@@ -15,8 +15,8 @@ export interface Budget {
 export interface CreateBudgetPayload {
   category: string;
   amount: number;
-  month: string;
-  year: string
+  month: number;
+  year: number;
 }
 
 export const createBudget = async (data: CreateBudgetPayload) => {
@@ -24,8 +24,11 @@ export const createBudget = async (data: CreateBudgetPayload) => {
   return response.data;
 };
 
-export const getBudget = async () => {
-    const response = await api.get("/budget");
+export const getBudget = async (month?: number, year?: number) => {
+    const params = new URLSearchParams();
+    if (month) params.append("month", String(month));
+    if (year) params.append("year", String(year));
+    const response = await api.get(`/budget?${params.toString()}`);
     return response.data.data;
 }
 

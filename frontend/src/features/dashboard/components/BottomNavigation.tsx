@@ -5,8 +5,8 @@ const items = [
   { label: "Dashboard", icon: Home, path: "/dashboard" },
   { label: "Transactions", icon: ReceiptText, path: "/transaction" },
   { label: "Budget", icon: Wallet, path: "/budget" },
-  { label: "Analytics", icon: BarChart3, path: "/dashboard" },
-  { label: "Profile", icon: User, path: "/dashboard" },
+  { label: "Analytics", icon: BarChart3, path: "/analytics" },
+  { label: "Profile", icon: User, path: "/profile" },
 ];
 
 export default function BottomNavigation() {
@@ -18,10 +18,7 @@ export default function BottomNavigation() {
       <div className="grid h-16 grid-cols-5 items-center px-px py-1.5">
         {items.map((item) => {
           const Icon = item.icon;
-          const isActive =
-            (item.label === "Dashboard" && location.pathname === "/dashboard") ||
-            (item.label === "Transactions" && location.pathname === "/transaction") ||
-            (item.label === "Budget" && location.pathname === "/budget");
+          const isActive = location.pathname === item.path;
 
           return (
             <button

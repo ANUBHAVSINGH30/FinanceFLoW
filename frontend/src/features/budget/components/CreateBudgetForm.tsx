@@ -1,6 +1,4 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useState } from "react";
 import { Button } from "../../../components/ui/Button";
 
 const CATEGORIES = [
@@ -13,16 +11,12 @@ const CATEGORIES = [
   "Other",
 ] as const;
 
-const budgetSchema = z.object({
-  category: z.enum(CATEGORIES),
-  amount: z.coerce
-    .number()
-    .positive("Budget amount must be greater than 0"),
-  month: z.string().min(1, "Month is required"),
-});
-
-type BudgetFormInput = z.input<typeof budgetSchema>;
-type BudgetFormData = z.output<typeof budgetSchema>;
+export type BudgetFormData = {
+  category: string;
+  amount: number;
+  month: number;
+  year: number;
+};
 
 type CreateBudgetFormProps = {
   onSubmit: (data: BudgetFormData) => Promise<void>;
@@ -35,109 +29,80 @@ export default function CreateBudgetForm({
   onCancel,
   isSubmitting = false,
 }: CreateBudgetFormProps) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<BudgetFormInput, unknown, BudgetFormData>({
-    resolver: zodResolver(budgetSchema),
-    defaultValues: {
-      category: "Other",
-      amount: 0,
-      month: new Date().toISOString().slice(0, 7),
-    },
-  });
+  const [category, setCategory] = useState<string>("Other");
+  const [amount, setAmount] = useState<number>(0);
+  const [monthValue, setMonthValue] = useState<string>(new Date().toISOString().slice(0, 7));
+  const [errors, setErrors] = useState<{ category?: string; amount?: string; month?: string }>({});
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const newErrors: typeof errors = {};
+
+    if (!category) newErrors.category = "Category is required";
+    if (!amount || amount <= 0) newErrors.amount = "Budget amount must be greater than 0";
+    if (!monthValue) newErrors.month = "Month is required";
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    const [yearStr, monthStr] = monthValue.split("-");
+    await onSubmit({
+      category,
+      amount,
+      month: Number(monthStr),
+      year: Number(yearStr),
+    });
+  };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="space-y-5"
-    >
+    <form onSubmit={handleSubmit} className="space-y-5">
       <div className="space-y-1.5">
-        <label className="text-sm font-medium text-slate-700">
-          Category
-        </label>
-
+        <label className="text-sm font-medium text-slate-700">Category</label>
         <select
-          {...register("category")}
+          value={category}
+          onChange={(e) => { setCategory(e.target.value); setErrors((prev) => ({ ...prev, category: undefined })); }}
           className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
         >
-          {CATEGORIES.map((category) => (
-            <option
-              key={category}
-              value={category}
-            >
-              {category}
-            </option>
+          {CATEGORIES.map((cat) => (
+            <option key={cat} value={cat}>{cat}</option>
           ))}
         </select>
-
-        {errors.category && (
-          <p className="text-xs text-red-500">
-            {errors.category.message}
-          </p>
-        )}
+        {errors.category && <p className="text-xs text-red-500">{errors.category}</p>}
       </div>
 
       <div className="space-y-1.5">
-        <label className="text-sm font-medium text-slate-700">
-          Budget Amount
-        </label>
-
+        <label className="text-sm font-medium text-slate-700">Budget Amount</label>
         <div className="relative">
-          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-            ₹
-          </span>
-
+          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">₹</span>
           <input
-            {...register("amount")}
+            value={amount || ""}
+            onChange={(e) => { setAmount(Number(e.target.value)); setErrors((prev) => ({ ...prev, amount: undefined })); }}
             type="number"
             placeholder="0"
             className="w-full rounded-xl border border-slate-200 py-3 pl-8 pr-4 text-sm outline-none focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
           />
         </div>
-
-        {errors.amount && (
-          <p className="text-xs text-red-500">
-            {errors.amount.message}
-          </p>
-        )}
+        {errors.amount && <p className="text-xs text-red-500">{errors.amount}</p>}
       </div>
 
       <div className="space-y-1.5">
-        <label className="text-sm font-medium text-slate-700">
-          Month
-        </label>
-
+        <label className="text-sm font-medium text-slate-700">Month</label>
         <input
-          {...register("month")}
+          value={monthValue}
+          onChange={(e) => { setMonthValue(e.target.value); setErrors((prev) => ({ ...prev, month: undefined })); }}
           type="month"
           className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-blue-300 focus:ring-2 focus:ring-blue-100"
         />
-
-        {errors.month && (
-          <p className="text-xs text-red-500">
-            {errors.month.message}
-          </p>
-        )}
+        {errors.month && <p className="text-xs text-red-500">{errors.month}</p>}
       </div>
 
       <div className="flex gap-3 pt-2">
-        <Button
-          type="button"
-          variant="secondary"
-          onClick={onCancel}
-          className="flex-1"
-          disabled={isSubmitting}
-        >
+        <Button type="button" variant="secondary" onClick={onCancel} className="flex-1" disabled={isSubmitting}>
           Cancel
         </Button>
-
-        <Button
-          type="submit"
-          className="flex-1"
-          disabled={isSubmitting}
-        >
+        <Button type="submit" className="flex-1" disabled={isSubmitting}>
           {isSubmitting ? "Creating..." : "Create Budget"}
         </Button>
       </div>

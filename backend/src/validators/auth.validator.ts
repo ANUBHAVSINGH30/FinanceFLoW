@@ -27,3 +27,21 @@ export const signinSchema = z.object({
 
 export type SignupInput = z.infer<typeof signupSchema>;
 export type SigninInput = z.infer<typeof signinSchema>;
+
+export const updateProfileSchema = z.object({
+  name: z.string().trim().min(2, "Name must be at least 2 characters").max(50, "Name should not be more than 50 characters").optional(),
+  currency: z.enum(["INR", "USD", "EUR", "GBP", "JPY", "CAD", "AUD"]).optional(),
+}).refine((data) => data.name || data.currency, {
+  message: "At least one field (name or currency) is required",
+});
+
+export const changePasswordSchema = z.object({
+  currentPassword: z.string().min(1, "Current password is required"),
+  newPassword: z.string().min(8, "New password must be at least 8 characters").max(100),
+}).refine((data) => data.currentPassword !== data.newPassword, {
+  message: "New password must be different from current password",
+  path: ["newPassword"],
+});
+
+export type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
+export type ChangePasswordInput = z.infer<typeof changePasswordSchema>;

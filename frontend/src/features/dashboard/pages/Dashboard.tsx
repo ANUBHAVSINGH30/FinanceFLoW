@@ -8,12 +8,10 @@ import { logout } from "../../../lib/auth";
 
 import {
   BarChart3,
-  CreditCard,
   Home,
   LogOut,
   PieChart,
   ReceiptText,
-  Settings,
   User,
   Wallet,
 } from "lucide-react";
@@ -31,11 +29,9 @@ import Greeting from "../components/Greeting";
 const sidebarItems = [
   { label: "Dashboard", icon: Home, path: "/dashboard" },
   { label: "Transactions", icon: ReceiptText, path: "/transaction" },
-  { label: "Analytics", icon: BarChart3, path: "/dashboard" },
+  { label: "Analytics", icon: BarChart3, path: "/analytics" },
   { label: "Budgets", icon: PieChart, path: "/budget" },
-  { label: "Cards", icon: CreditCard, path: "/dashboard" },
-  { label: "Profile", icon: User, path: "/dashboard" },
-  { label: "Settings", icon: Settings, path: "/dashboard" },
+  { label: "Profile", icon: User, path: "/profile" },
 ];
 
 
@@ -99,8 +95,7 @@ function Dashboard() {
         <nav className="mt-10 space-y-2">
           {sidebarItems.map((item) => {
             const Icon = item.icon;
-            const isActive = location.pathname === item.path && item.label === "Dashboard"
-              || (item.label === "Transactions" && location.pathname === "/transaction");
+            const isActive = location.pathname === item.path;
 
             return (
               <button

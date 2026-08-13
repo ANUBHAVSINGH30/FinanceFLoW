@@ -6,6 +6,8 @@ import SignUp from "../features/auth/pages/Signup";
 import Dashboard from "../features/dashboard/pages/Dashboard";
 import Transactions from "../features/transaction/pages/Transaction";
 import Budget from "../features/budget/pages/Budget";
+import Analytics from "../features/analytics/pages/Analytics";
+import Profile from "../features/profile/pages/Profile";
 
 function AppRoutes(){
     return (
@@ -21,7 +23,8 @@ function AppRoutes(){
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/transaction" element={<Transactions />} />
                 <Route path="/budget" element={<Budget />} />
-
+                <Route path="/analytics" element={<Analytics />} />
+                <Route path="/profile" element={<Profile />} />
             </Route>
 
             {/* Fallback Route */}

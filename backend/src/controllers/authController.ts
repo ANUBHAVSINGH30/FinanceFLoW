@@ -56,4 +56,41 @@ export class AuthController {
       next(error);
     }
   }
+
+  static async updateProfile(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const userId = req.userId!;
+      const user = await AuthService.updateProfile(userId, req.body);
+
+      return res.status(200).json({
+        success: true,
+        message: "Profile updated successfully",
+        data: user,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async changePassword(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const userId = req.userId!;
+      const result = await AuthService.changePassword(userId, req.body);
+
+      return res.status(200).json({
+        success: true,
+        message: result.message,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
